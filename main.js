@@ -4,6 +4,12 @@ var gameData = {
     workerCost: 10,
     moneyInterval: 1000,
     moneyIntervalCost: 10,
+    moneyTree: 1,
+    lastTick: Date.now(),
+}
+
+var pageStateData = {
+    currentPage: "moneyTreeMenu",
 }
 
 function harvestMoney() {
@@ -23,6 +29,8 @@ function buyWorker() {
 }
 
 var mainGameLoop = window.setInterval(function() {
+    diff = Date.now() - gameData.lastTick
+    gameData.lastTick = Date.now()
     harvestMoney()
 }, gameData.moneyInterval)
 
@@ -38,6 +46,14 @@ function buyFasterMoney() {
         document.getElementById("buyFasterMoney").innerHTML = "Speed up production (Current " + gameData.moneyInterval + "ms" + "): " + gameData.moneyIntervalCost
     }
 }
+
+function tab(tab) {
+    document.getElementById(pageStateData.currentPage).style.display = "none"
+    document.getElementById(tab).style.display = "inline-block"
+    pageStateData.currentPage = tab
+}
+
+tab("moneyTreeMenu")
 
 // var saveGameLoop = window.setInterval(function() {
 //     localStorage.setItem("moneyTreeSave", JSON.stringify(gameData))

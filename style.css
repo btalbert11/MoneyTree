@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.money-harvested {
+    color: red;
+}
+
+body {
+    text-align: center;
+}
