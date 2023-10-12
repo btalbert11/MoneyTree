@@ -1,2 +1,2 @@
 # MoneyTree
-A incremintal game about growing money on trees
+A incremental game about growing money on trees
