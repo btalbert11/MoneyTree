@@ -14,16 +14,16 @@
     <h4>You have 1 Money Tree</h4>
     <p id="moneyHarvested" class="money-harvested">You have 0 Money</p>
     <div id="navigationButtons">
-        <button onclick="tab('moneyTreeMenu')">Money Trees</button>
-        <button onclick="tab('shopMenu')">Shop</button>
+        <button onclick="tab('moneyTreeMenu')" class="navigation-button">Money Trees</button>
+        <button onclick="tab('shopMenu')" class="navigation-button">Shop</button>
     </div>
     <div id="moneyTreeMenu">
-        <button onclick="buyWorker()" id="workerBuy">Buy a Worker (0 Owned): 10 moneys</button>
-        <button onclick="harvestMoney()" id="harvestMoney">Harvest Money</button>
-        <button onclick="buyFasterMoney()" id="buyFasterMoney">Speed up Production (Current 1000 ms): 1000</button>
+        <button onclick="buyWorker()" id="workerBuy" class="main-button">Buy a Worker (0 Owned): 10 moneys</button>
+        <button onclick="harvestMoney()" id="harvestMoney" class="main-button">Harvest Money</button>
+        <button onclick="buyFasterMoney()" id="buyFasterMoney" class="main-button">Speed up Production (Current 1000 ms): 1000</button>
     </div>
     <div id="shopMenu" style="display: none;">
-        <button>buy smthing</button>
+        <button>Plant a new Money Tree</button>
     </div>
 </body>
 </html>

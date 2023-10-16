@@ -1,9 +1,23 @@
 @charset "UTF-8";
 
 .money-harvested {
-    color: red;
+    color: rgb(26, 14, 187);
 }
 
 body {
-    text-align: center;
+    text-align: left;
+}
+
+main-button {
+    font-family:'Courier New', Courier, monospace;
+    font-size: 18px;
+    width: auto;
+    height: auto;
+}
+
+.navigation-button {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    width: 100px;
+    height: 30px;
 }

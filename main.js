@@ -4,12 +4,22 @@ var gameData = {
     workerCost: 10,
     moneyInterval: 1000,
     moneyIntervalCost: 10,
-    moneyTree: 1,
+    moneyTree: {
+        timeToGrow: 10000,
+        germinateTime: 100,
+        moneyAmount: 1000
+    },
     lastTick: Date.now(),
 }
 
 var pageStateData = {
     currentPage: "moneyTreeMenu",
+}
+
+var moneyTree = {
+    timeToGrow: 10000, // When buying a new tree
+    germinateTime: 100, // time to refresh money
+    moneyAmount: 1000, // money in tree
 }
 
 function harvestMoney() {
