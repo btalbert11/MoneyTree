@@ -8,9 +8,9 @@
     <title>Growing Money</title>
 </head>
 
-<script src = "main.js" charset="UTF-8" type="text/javascript"></script>
 
-<body>
+
+<body onload="init()">
     <h4>You have 1 Money Tree</h4>
     <p id="moneyHarvested" class="money-harvested">You have 0 Money</p>
     <div id="navigationButtons">
@@ -25,5 +25,11 @@
     <div id="shopMenu" style="display: none;">
         <button>Plant a new Money Tree</button>
     </div>
+    <div id="treeOrchard" class="tree-orchard">
+        <p>Your Trees</p>
+        <p id="tree" class="tree">🌳</p>
+    </div>
+
+    <script src = "main.js" charset="UTF-8" type="text/javascript"></script>
 </body>
 </html>

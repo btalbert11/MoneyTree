@@ -21,3 +21,14 @@ main-button {
     width: 100px;
     height: 30px;
 }
+
+.tree-orchard {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    margin-top: 70px;
+}
+
+.tree {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 50px;
+}
