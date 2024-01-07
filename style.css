@@ -31,4 +31,5 @@ main-button {
 .tree {
     font-family: 'Courier New', Courier, monospace;
     font-size: 50px;
+    display: inline;
 }

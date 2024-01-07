@@ -23,11 +23,13 @@
         <button onclick="buyFasterMoney()" id="buyFasterMoney" class="main-button">Speed up Production (Current 1000 ms): 1000</button>
     </div>
     <div id="shopMenu" style="display: none;">
-        <button>Plant a new Money Tree</button>
+        <button onclick="plantTree()" id="plantTree" class="main-button">Plant a new Money Tree: 10 moneys</button>
     </div>
     <div id="treeOrchard" class="tree-orchard">
         <p>Your Trees</p>
-        <p id="tree" class="tree">🌳</p>
+        <ul id="treeList" class="tree-list">
+            <li id="tree" class="tree">🌳</li>
+        </ul>
     </div>
 
     <script src = "main.js" charset="UTF-8" type="text/javascript"></script>
