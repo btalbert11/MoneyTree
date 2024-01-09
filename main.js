@@ -28,6 +28,7 @@ class MoneyTree {
         this.active = true
         this.growTimer = undefined
         updateTreeListIcons()
+        document.getElementById("treeTotalTitle").innerHTML = "You have " + gameData.Trees.length + " Money Trees"
     }
 }
 
