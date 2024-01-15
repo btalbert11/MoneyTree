@@ -235,6 +235,22 @@ function buyFertilizer() {
     }
 }
 
+function buyFertilizer() {
+    if (gameData.money >= gameData.fertilizerCost) {
+        // Account for money changes
+        gameData.money -= gameData.fertilizerCost
+        gameData.fertilizerUpgradesOwned += 1
+        gameData.fertilizerCost *= 1.7
+        gameData.currentTreeGerminateTime *= gameData.fertilizerReductionRate
+        document.getElementById("buyFertilizer").innerHTML = "Buy fiertilizer. Trees Regrow Money 5% Faster(Currently own " + gameData.fertilizerUpgradesOwned + " ): " + gameData.fertilizerCost +" moneys"
+
+        // Update all Trees
+        gameData.Trees.forEach(function (tree) {
+            tree.germinateTime *= gameData.fertilizerReductionRate
+        })
+    }
+}
+
 function tab(tab) {
     document.getElementById(pageStateData.currentPage).style.display = "none"
     document.getElementById(tab).style.display = "inline-block"
