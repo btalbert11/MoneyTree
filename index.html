@@ -20,11 +20,13 @@
     <div id="moneyTreeMenu">
         <button onclick="buyWorker()" id="workerBuy" class="main-button">Buy a Worker (0 Owned): 10 moneys</button>
         <button onclick="harvestMoney()" id="harvestMoney" class="main-button">Harvest Money</button>
-        <button onclick="buyFasterMoney()" id="buyFasterMoney" class="main-button">Speed up Production (Current 1000 ms): 1000</button>
+        <button onclick="buyFasterMoney()" id="buyFasterMoney" class="main-button" style="display: none;">Speed up Production (Current 1000 ms): 1000</button>
+        <button onclick="buyAutoClicker()" id="buyAutoClicker" class="main-button">Buy an Autocliker!: 300 moneys</button>
     </div>
     <div id="shopMenu" style="display: none;">
         <button onclick="plantTree()" id="plantTree" class="main-button">Plant a new Money Tree: 10 moneys</button>
-        <button onclick="buyFertilizer()" id="buyFertilizer" class="main-button" style="display: none;">Buy fiertilizer. Trees Regrow Money 5% Faster(Currently own 0): 3000 moneys</button>
+        <button onclick="buyFertilizer()" id="buyFertilizer" class="main-button" style="display: none;">Buy fertilizer. Trees Regrow Money 5% Faster(Currently own 0): 3000 moneys</button>
+        <button onclick="buyPesticides()" id="buyPesticides" class="main-button" style="display: none;">Buy pesticides. Increase each trees max amount of money by 30% (Currently own 0): 5000 moneys</button>
     </div>
     <div id="treeOrchard" class="tree-orchard">
         <p>Your Trees</p>

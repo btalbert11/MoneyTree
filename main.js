@@ -1,15 +1,16 @@
 // Single money tree. Hold a certain amount of money, when it runs out there is a timer until it is refreshed
 class MoneyTree {
-    constructor(timeToGrow = 10000, germinateTime = 1000, moneyAmount = 0, maxMoney = 100) {
+    constructor(timeToGrow = 10000, _germinateTime = 1000, maxMoney = 100, moneyAmount = 0) {
+        console.log(_germinateTime)
         this.maxMoney = maxMoney
         this.timeToGrow = timeToGrow // When buying a new tree
-        this.germinateTime = germinateTime // time to refresh all money in tree
+        this.germinateTime = _germinateTime // time to refresh all money in tree
         this.moneyAmount = moneyAmount // money in tree
         this.refreshTimer = undefined // used to track when tree has money again, will be an intervalTimeout
         this.growTimer  = undefined // used to track when tree is done growing with interval timeout
         this.active = false // set when grown
         this.hasMoney = true // set to true when after money grown
-
+        console.log(this.germinateTime)
         if (this.moneyAmount == 0 || this.moneyAmount > this.maxMoney) {
             this.moneyAmount = this.maxMoney
         }
@@ -25,10 +26,12 @@ class MoneyTree {
     }
 
     activate() {
+        console.log(this.germinateTime)
         this.active = true
         this.growTimer = undefined
         updateTreeListIcons()
-        document.getElementById("treeTotalTitle").innerHTML = "You have " + gameData.Trees.length + " Money Trees"
+        updateHeaderTitle()
+        // document.getElementById("treeTotalTitle").innerHTML = "You have " + gameData.Trees.length + " Money Trees"
     }
 }
 
@@ -38,21 +41,36 @@ var treeList = document.getElementById("treeList")
 
 // Global game data
 var gameData = {
-    money: 0, // player money
+    money: 0,
     moneyPerClick: 1, // money made per click
     workerCost: 10, // cost of a worker
+    automaticCollection: false, // tracks if the user has purchased the upgrade to automatically collect money
+    autoClickerCost: 300,
     moneyInterval: 1000, // how often money is automatically made, in ms
     moneyIntervalCost: 10, // cost to reduce interval
     Trees: [new MoneyTree()], // list of money trees
     treeCost: 10, // cost of new tree
-    fertilizerCost: 3000, // cost to buy more fertilizer
-    fertilizerUpgradesOwned: 0, // number of fertilizer upgrades purchased
-    fertilizerReductionRate: 0.95, // new time to regrow money after fertilizer purchased 
+    treeTimeToGrow: 10000,
+    fertilizerCost: 3000,
+    fertilizerUpgradesOwned: 0,
     currentTreeGerminateTime: 1000, // time for a tree to regrow money
+    fertilizerReductionRate: 0.95, // reduction of current grow time after upgrade purchased 
+    pesticidesCost: 5000, 
+    pesticidesUpgradesOwned: 0,
+    pesticidesMultiplier: 1.3, // amount of extra max money each upgrade gives
+    currentTreeMaxMoney: 100,
     lastTickTime: Date.now(), // real time of last tick
     globalTickRate: 1, // tick rate of game, in ms. This may become a problem being so often
     tickCount: 0, // used to count ticks for money collection
 }
+
+// Object.defineProperty(gameData, "money", {
+//     set(amount) {
+//         document.getElementById("moneyHarvested").innerHTML = "You have " + amount +" Money"
+//     },
+// })
+    
+
 
 var pageStateData = {
     currentPage: "moneyTreeMenu",
@@ -69,21 +87,25 @@ function updateTreeListIcons() {
         var li = document.createElement("li")
         li.setAttribute("id", "tree")
         li.setAttribute("class", "tree")
-        if (tree.activate && tree.hasMoney) {
+        if (tree.active && tree.hasMoney) {
             li.append("🌳")
         }
         // Tree has no money
-        else {
+        else if(tree.active && !tree.hasMoney) {
             li.append("DEAD")            
         }
         treeList.appendChild(li)
     })
 }
 
+function updateHeaderTitle() {
+    document.getElementById("moneyHarvested").innerHTML = "You have " + gameData.money + " money"
+    document.getElementById("treeTotalTitle").innerHTML = "You have " + gameData.Trees.length + " Money Trees"
+}
+
 // Loop through all trees, add money to total, and reduce money in tree
 function harvestMoney() {
     gameData.Trees.forEach(function (tree, i) {
-        console.log(i, tree)
         // Tree still growing after purchase or after running out money
         if (!tree.active || !tree.hasMoney) {return}
         // Tree has more than full amount
@@ -110,24 +132,43 @@ function harvestMoney() {
         }
     })
 
+    // Unlock pesticides if money > 5000
+    if (gameData.money >= 5000) {
+        document.getElementById("buyPesticides").style.display = "inline-block"
+    }
+
+    updateHeaderTitle()
     //gameData.money += gameData.moneyPerClick
-    document.getElementById("moneyHarvested").innerHTML = "You have " + gameData.money + " money"
+    // document.getElementById("moneyHarvested").innerHTML = "You have " + gameData.money + " money"
     //document.getElementById("workerBuy").innerHTML = "Buy a Worker (" + (gameData.moneyPerClick - 1) + " Owned): " + gameData.workerCost + " moneys" 
 }
 
+function buyAutoClicker() {
+    if (gameData.money >= gameData.autoClickerCost){
+        gameData.money -= gameData.autoClickerCost
+        gameData.automaticCollection = true
+        document.getElementById("buyAutoClicker").style.display = "none"
+        document.getElementById("buyFasterMoney").style.display = "inline-block"
+        updateHeaderTitle()
+    }
+}
+
 function buyWorker() {
-    if (gameData.money > gameData.workerCost) {
+    if (gameData.money >= gameData.workerCost) {
         gameData.money -= gameData.workerCost
         gameData.moneyPerClick += 1
         gameData.workerCost *= 2
         //document.getElementById("moneyHarvested").innerHTML = "You have " + gameData.money + " money"
         document.getElementById("workerBuy").innerHTML = "Buy a Worker (" + (gameData.moneyPerClick - 1) + " Owned): " + gameData.workerCost + " moneys" 
+        updateHeaderTitle()
     }
 }
 
 function plantTree() {
     if (gameData.money >= gameData.treeCost) {
-        var newTree = new MoneyTree(germinateTime = gameData.currentTreeGerminateTime)
+        console.log(gameData.currentTreeGerminateTime)
+        var newTree = new MoneyTree(gameData.treeTimeToGrow, gameData.currentTreeGerminateTime, gameData.currentTreeMaxMoney)
+        console.log(newTree.germinateTime)
         // Change money
         gameData.Trees.push(newTree)
         gameData.money -= gameData.treeCost
@@ -135,6 +176,7 @@ function plantTree() {
         // Setup growth timeout
         newTree.growTimer = window.setTimeout(function () {
             newTree.activate()
+            console.log(newTree.germinateTime)
         }, newTree.timeToGrow)
         // Update html
         document.getElementById("plantTree").innerHTML = "Plant a new Money Tree: " + (gameData.treeCost) + " moneys"
@@ -143,31 +185,53 @@ function plantTree() {
         if (gameData.Trees.length >= 4) {
             document.getElementById("buyFertilizer").style.display = "inline-block"
         }
+
+        updateHeaderTitle()
     }
 }
 
 function buyFasterMoney() {
-    if (gameData.money > gameData.moneyIntervalCost) {
+    if (gameData.money >= gameData.moneyIntervalCost) {
         gameData.money -= gameData.moneyIntervalCost
         gameData.moneyIntervalCost = Math.floor(gameData.moneyIntervalCost * 2.2)
         gameData.moneyInterval = Math.ceil(gameData.moneyInterval * 0.99)
         document.getElementById("buyFasterMoney").innerHTML = "Speed up production (Current " + gameData.moneyInterval + "ms" + "): " + gameData.moneyIntervalCost
+        updateHeaderTitle()
+    }
+}
+
+function buyPesticides() {
+    // Account for money changes
+    if (gameData.money >= gameData.pesticidesCost) {
+        gameData.money -= gameData.pesticidesCost
+        gameData.pesticidesUpgradesOwned += 1
+        gameData.pesticidesCost *= 2.3
+        gameData.currentTreeMaxMoney *= gameData.pesticidesMultiplier
+        document.getElementById("buyPesticides").innerHTML = "Buy pesticides. Increase each trees max amount of money by 30% (Currently own " + gameData.pesticidesUpgradesOwned + "): " + gameData.pesticidesCost + " moneys"
+        
+        // Update all trees
+        gameData.Trees.forEach(function (tree) {
+            tree.maxMoney = gameData.currentTreeMaxMoney
+        })
+
+        updateHeaderTitle()
     }
 }
 
 function buyFertilizer() {
+    // Account for money changes
     if (gameData.money >= gameData.fertilizerCost) {
-        // Account for money changes
         gameData.money -= gameData.fertilizerCost
         gameData.fertilizerUpgradesOwned += 1
         gameData.fertilizerCost *= 1.7
         gameData.currentTreeGerminateTime *= gameData.fertilizerReductionRate
-        document.getElementById("buyFertilizer").innerHTML = "Buy fiertilizer. Trees Regrow Money 5% Faster(Currently own " + gameData.fertilizerUpgradesOwned + " ): " + gameData.fertilizerCost +" moneys"
+        document.getElementById("buyFertilizer").innerHTML = "Buy fertilizer. Trees Regrow Money 5% Faster(Currently own " + gameData.fertilizerUpgradesOwned + " ): " + gameData.fertilizerCost +" moneys"
 
         // Update all Trees
         gameData.Trees.forEach(function (tree) {
             tree.germinateTime *= gameData.fertilizerReductionRate
         })
+        updateHeaderTitle()
     }
 }
 
@@ -185,8 +249,8 @@ function init() {
         gameData.tickCount += diff
         gameData.lastTickTime = Date.now()
         
-        // harvest money if its time
-        if (gameData.tickCount >= gameData.moneyInterval) {
+        // harvest money if its time and user has upgrade
+        if (gameData.automaticCollection && gameData.tickCount >= gameData.moneyInterval) {
             harvestMoney()
             gameData.tickCount = 0
         }
