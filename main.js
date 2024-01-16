@@ -92,7 +92,7 @@ function updateTreeListIcons() {
         }
         // Tree has no money
         else if(tree.active && !tree.hasMoney) {
-            li.append("DEAD")            
+            li.append("💀")            
         }
         treeList.appendChild(li)
     })
@@ -205,8 +205,8 @@ function buyPesticides() {
     if (gameData.money >= gameData.pesticidesCost) {
         gameData.money -= gameData.pesticidesCost
         gameData.pesticidesUpgradesOwned += 1
-        gameData.pesticidesCost *= 2.3
-        gameData.currentTreeMaxMoney *= gameData.pesticidesMultiplier
+        gameData.pesticidesCost = Math.floor(gameData.pesticidesCost * 2.3)
+        gameData.currentTreeMaxMoney = Math.floor(game.currentTreeMaxMoney * gameData.pesticidesMultiplier)
         document.getElementById("buyPesticides").innerHTML = "Buy pesticides. Increase each trees max amount of money by 30% (Currently own " + gameData.pesticidesUpgradesOwned + "): " + gameData.pesticidesCost + " moneys"
         
         // Update all trees
@@ -223,7 +223,7 @@ function buyFertilizer() {
     if (gameData.money >= gameData.fertilizerCost) {
         gameData.money -= gameData.fertilizerCost
         gameData.fertilizerUpgradesOwned += 1
-        gameData.fertilizerCost *= 1.7
+        gameData.fertilizerCost = Math.floor(gameData.fertilizerCost * 1.7)
         gameData.currentTreeGerminateTime *= gameData.fertilizerReductionRate
         document.getElementById("buyFertilizer").innerHTML = "Buy fertilizer. Trees Regrow Money 5% Faster(Currently own " + gameData.fertilizerUpgradesOwned + " ): " + gameData.fertilizerCost +" moneys"
 
@@ -240,7 +240,7 @@ function buyFertilizer() {
         // Account for money changes
         gameData.money -= gameData.fertilizerCost
         gameData.fertilizerUpgradesOwned += 1
-        gameData.fertilizerCost *= 1.7
+        gameData.fertilizerCost = Math.floor(gameData.fertilizerCost * 1.7)
         gameData.currentTreeGerminateTime *= gameData.fertilizerReductionRate
         document.getElementById("buyFertilizer").innerHTML = "Buy fiertilizer. Trees Regrow Money 5% Faster(Currently own " + gameData.fertilizerUpgradesOwned + " ): " + gameData.fertilizerCost +" moneys"
 
